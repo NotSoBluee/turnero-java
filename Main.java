@@ -19,12 +19,21 @@ public class Main {
 
     switch (op) {
         case 1 -> {
-            System.out.print("Nombre: ");
-            String nombre = sc.nextLine();
-            if (nombre.equalsIgnoreCase("cancelar")) continue;
-            String dni = sc.nextLine();
-            if (dni.equalsIgnoreCase("cancelar")) continue;
-            gestor.agregarPaciente(nombre, dni);
+                System.out.print("Nombre (o 'cancelar'): ");
+                String nombre = sc.nextLine();
+                if (nombre.equalsIgnoreCase("cancelar")) continue;
+
+                System.out.print("DNI (o 'cancelar'): ");
+                String dni = sc.nextLine();
+                if (dni.equalsIgnoreCase("cancelar")) continue;
+
+                System.out.print("¿Tiene obra social? (nombre o 'no'): ");
+                String obraSocial = sc.nextLine();
+                if (obraSocial.equalsIgnoreCase("cancelar")) continue;
+                if (obraSocial.equalsIgnoreCase("no")) obraSocial = "Sin obra social";
+
+                gestor.agregarPaciente(nombre, dni, obraSocial);
+
                 }
 
         case 2 -> gestor.mostrarPacientes();

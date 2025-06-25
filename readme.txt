@@ -49,6 +49,12 @@ No tiene base de datos ni archivos todavía. Todo se borra cuando cerrás el pro
 ## v0.7 - no repite turno
 - ahora se checkea que si el horario esta dado no permite
 
+### v0.8 – Obra social en pacientes
+- Se registra si un paciente tiene obra social.
+- El dato se guarda en pacientes.txt.
+- Se muestra al listar turnos.
+
+
 ### Próximas versiones que tengo en mente (ideas en la libreta)
 - v1.0 → Quizás una interfaz gráfica simple
 

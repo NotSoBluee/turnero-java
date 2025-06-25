@@ -11,6 +11,7 @@ public Turno(String fecha, String hora, Paciente paciente) {
 
 @Override
 public String toString() {
-    return "Turno para " + paciente.nombre + " el día " + fecha + " a las " + hora;
-    }
+    return "Turno para " + paciente.nombre + " (" + paciente.obraSocial + ")" +
+           " el día " + fecha + " a las " + hora;
+}
 }

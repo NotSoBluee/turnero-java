@@ -13,8 +13,7 @@ public class GestorTurnos {
         cargarTurnos();
     }
 
-public void agregarPaciente(String nombre, String dni) {
-    // Validar si el DNI ya existe
+public void agregarPaciente(String nombre, String dni, String obraSocial) {
     for (Paciente p : pacientes) {
         if (p.dni.equals(dni)) {
             System.out.println("⚠️ Ya existe un paciente con ese DNI.");
@@ -22,12 +21,12 @@ public void agregarPaciente(String nombre, String dni) {
         }
     }
 
-    // Si no existe, lo agregamos normalmente
-    Paciente nuevo = new Paciente(nombre, dni);
+    Paciente nuevo = new Paciente(nombre, dni, obraSocial);
     pacientes.add(nuevo);
     guardarPaciente(nuevo);
     System.out.println("✅ Paciente agregado.");
 }
+
 
     public void mostrarPacientes() {
         for (Paciente p : pacientes) {
@@ -65,29 +64,34 @@ public void agendarTurno(String dni, String fecha, String hora) {
 
     // ------------------ ARCHIVOS ------------------
 
-    private void cargarPacientes() {
-        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_PACIENTES))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                String[] partes = linea.split("\\|");
-                if (partes.length == 2) {
-                    pacientes.add(new Paciente(partes[0], partes[1]));
-                }
+ private void cargarPacientes() {
+    try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_PACIENTES))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split("\\|");
+            if (partes.length >= 2) {
+                String nombre = partes[0];
+                String dni = partes[1];
+                String obraSocial = (partes.length >= 3) ? partes[2] : "Sin obra social";
+                pacientes.add(new Paciente(nombre, dni, obraSocial));
             }
-            System.out.println("📂 Pacientes cargados desde archivo.");
-        } catch (IOException e) {
-            System.out.println("📁 No se encontró archivo de pacientes. Se creará uno nuevo.");
         }
+        System.out.println("📂 Pacientes cargados desde archivo.");
+    } catch (IOException e) {
+        System.out.println("📁 No se encontró archivo de pacientes. Se creará uno nuevo.");
     }
+}
 
-    private void guardarPaciente(Paciente p) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_PACIENTES, true))) {
-            bw.write(p.nombre + "|" + p.dni);
-            bw.newLine();
-        } catch (IOException e) {
-            System.out.println("❌ Error al guardar paciente.");
-        }
+
+   private void guardarPaciente(Paciente p) {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_PACIENTES, true))) {
+        bw.write(p.nombre + "|" + p.dni + "|" + p.obraSocial);
+        bw.newLine();
+    } catch (IOException e) {
+        System.out.println("❌ Error al guardar paciente.");
     }
+}
+
 
 private void cargarTurnos() {
     try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_TURNOS))) {
