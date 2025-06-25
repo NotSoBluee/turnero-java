@@ -1,0 +1,110 @@
+import java.io.*;
+import java.util.ArrayList;
+
+public class GestorTurnos {
+    public ArrayList<Paciente> pacientes = new ArrayList<>();
+    public ArrayList<Turno> turnos = new ArrayList<>();
+
+    private final String ARCHIVO_PACIENTES = "pacientes.txt";
+    private final String ARCHIVO_TURNOS = "turnos.txt";
+
+    public GestorTurnos() {
+        cargarPacientes();
+        cargarTurnos();
+    }
+
+    public void agregarPaciente(String nombre, String dni) {
+        Paciente nuevo = new Paciente(nombre, dni);
+        pacientes.add(nuevo);
+        guardarPaciente(nuevo);
+        System.out.println("✅ Paciente agregado.");
+    }
+
+    public void mostrarPacientes() {
+        for (Paciente p : pacientes) {
+            System.out.println(p);
+        }
+    }
+
+    public void agendarTurno(String dni, String fecha) {
+        for (Paciente p : pacientes) {
+            if (p.dni.equals(dni)) {
+                Turno t = new Turno(fecha, p);
+                turnos.add(t);
+                guardarTurno(t);
+                System.out.println("✅ Turno agendado.");
+                return;
+            }
+        }
+        System.out.println("❌ No se encontró paciente con ese DNI.");
+    }
+
+    public void mostrarTurnos() {
+        for (Turno t : turnos) {
+            System.out.println(t);
+        }
+    }
+
+    // ------------------ ARCHIVOS ------------------
+
+    private void cargarPacientes() {
+        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_PACIENTES))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (partes.length == 2) {
+                    pacientes.add(new Paciente(partes[0], partes[1]));
+                }
+            }
+            System.out.println("📂 Pacientes cargados desde archivo.");
+        } catch (IOException e) {
+            System.out.println("📁 No se encontró archivo de pacientes. Se creará uno nuevo.");
+        }
+    }
+
+    private void guardarPaciente(Paciente p) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_PACIENTES, true))) {
+            bw.write(p.nombre + "|" + p.dni);
+            bw.newLine();
+        } catch (IOException e) {
+            System.out.println("❌ Error al guardar paciente.");
+        }
+    }
+
+    private void cargarTurnos() {
+        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_TURNOS))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (partes.length == 2) {
+                    String dni = partes[0];
+                    String fecha = partes[1];
+
+                    Paciente p = buscarPacientePorDNI(dni);
+                    if (p != null) {
+                        turnos.add(new Turno(fecha, p));
+                    }
+                }
+            }
+            System.out.println("📂 Turnos cargados desde archivo.");
+        } catch (IOException e) {
+            System.out.println("📁 No se encontró archivo de turnos. Se creará uno nuevo.");
+        }
+    }
+
+    private void guardarTurno(Turno t) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_TURNOS, true))) {
+            bw.write(t.paciente.dni + "|" + t.fecha);
+            bw.newLine();
+        } catch (IOException e) {
+            System.out.println("❌ Error al guardar turno.");
+        }
+    }
+
+    private Paciente buscarPacientePorDNI(String dni) {
+        for (Paciente p : pacientes) {
+            if (p.dni.equals(dni)) return p;
+        }
+        return null;
+    }
+}
