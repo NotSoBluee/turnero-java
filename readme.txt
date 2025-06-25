@@ -55,8 +55,7 @@ No tiene base de datos ni archivos todavía. Todo se borra cuando cerrás el pro
 - Se muestra al listar turnos.
 
 
-### Próximas versiones que tengo en mente (ideas en la libreta)
-- v1.0 → Quizás una interfaz gráfica simple
+# v 1.0 SE LOGRO!!!! INTERFAZ!!
 
 ---
 
