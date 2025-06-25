@@ -35,12 +35,20 @@ public void agregarPaciente(String nombre, String dni) {
         }
     }
 
-   public void agendarTurno(String dni, String fecha, String hora) {
+public void agendarTurno(String dni, String fecha, String hora) {
     for (Paciente p : pacientes) {
         if (p.dni.equals(dni)) {
-            Turno t = new Turno(fecha, hora, p);
-            turnos.add(t);
-            guardarTurno(t);
+            // ⚠️ Verificamos si ya tiene un turno ese día y hora
+            for (Turno t : turnos) {
+                if (t.paciente.dni.equals(dni) && t.fecha.equals(fecha) && t.hora.equals(hora)) {
+                    System.out.println("⚠️ Ese paciente ya tiene un turno en esa fecha y hora.");
+                    return;
+                }
+            }
+
+            Turno nuevo = new Turno(fecha, hora, p);
+            turnos.add(nuevo);
+            guardarTurno(nuevo);
             System.out.println("✅ Turno agendado.");
             return;
         }

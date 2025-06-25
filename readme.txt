@@ -46,6 +46,9 @@ No tiene base de datos ni archivos todavía. Todo se borra cuando cerrás el pro
 ## v0.6 - opcion de cancelar
 - cancelar entra en juego
 
+## v0.7 - no repite turno
+- ahora se checkea que si el horario esta dado no permite
+
 ### Próximas versiones que tengo en mente (ideas en la libreta)
 - v1.0 → Quizás una interfaz gráfica simple
 
