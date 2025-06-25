@@ -13,12 +13,21 @@ public class GestorTurnos {
         cargarTurnos();
     }
 
-    public void agregarPaciente(String nombre, String dni) {
-        Paciente nuevo = new Paciente(nombre, dni);
-        pacientes.add(nuevo);
-        guardarPaciente(nuevo);
-        System.out.println("✅ Paciente agregado.");
+public void agregarPaciente(String nombre, String dni) {
+    // Validar si el DNI ya existe
+    for (Paciente p : pacientes) {
+        if (p.dni.equals(dni)) {
+            System.out.println("⚠️ Ya existe un paciente con ese DNI.");
+            return;
+        }
     }
+
+    // Si no existe, lo agregamos normalmente
+    Paciente nuevo = new Paciente(nombre, dni);
+    pacientes.add(nuevo);
+    guardarPaciente(nuevo);
+    System.out.println("✅ Paciente agregado.");
+}
 
     public void mostrarPacientes() {
         for (Paciente p : pacientes) {
@@ -26,18 +35,19 @@ public class GestorTurnos {
         }
     }
 
-    public void agendarTurno(String dni, String fecha) {
-        for (Paciente p : pacientes) {
-            if (p.dni.equals(dni)) {
-                Turno t = new Turno(fecha, p);
-                turnos.add(t);
-                guardarTurno(t);
-                System.out.println("✅ Turno agendado.");
-                return;
-            }
+   public void agendarTurno(String dni, String fecha, String hora) {
+    for (Paciente p : pacientes) {
+        if (p.dni.equals(dni)) {
+            Turno t = new Turno(fecha, hora, p);
+            turnos.add(t);
+            guardarTurno(t);
+            System.out.println("✅ Turno agendado.");
+            return;
         }
-        System.out.println("❌ No se encontró paciente con ese DNI.");
     }
+    System.out.println("❌ No se encontró paciente con ese DNI.");
+}
+
 
     public void mostrarTurnos() {
         for (Turno t : turnos) {
@@ -71,26 +81,27 @@ public class GestorTurnos {
         }
     }
 
-    private void cargarTurnos() {
-        try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_TURNOS))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                String[] partes = linea.split("\\|");
-                if (partes.length == 2) {
-                    String dni = partes[0];
-                    String fecha = partes[1];
-
-                    Paciente p = buscarPacientePorDNI(dni);
-                    if (p != null) {
-                        turnos.add(new Turno(fecha, p));
-                    }
+private void cargarTurnos() {
+    try (BufferedReader br = new BufferedReader(new FileReader(ARCHIVO_TURNOS))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split("\\|");
+            if (partes.length == 3) {
+                String dni = partes[0];
+                String fecha = partes[1];
+                String hora = partes[2];
+                Paciente p = buscarPacientePorDNI(dni);
+                if (p != null) {
+                    turnos.add(new Turno(fecha, hora, p));
                 }
             }
-            System.out.println("📂 Turnos cargados desde archivo.");
-        } catch (IOException e) {
-            System.out.println("📁 No se encontró archivo de turnos. Se creará uno nuevo.");
         }
+        System.out.println("📂 Turnos cargados desde archivo.");
+    } catch (IOException e) {
+        System.out.println("📁 No se encontró archivo de turnos. Se creará uno nuevo.");
     }
+}
+
 
     private void guardarTurno(Turno t) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_TURNOS, true))) {

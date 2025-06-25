@@ -6,7 +6,7 @@ public class Main {
         GestorTurnos gestor = new GestorTurnos();
 
        while (true) {
-    System.out.println("\n--- MENÚ DE TURNOS ---");
+    System.out.println("\n--- MENÚ DE TURNOS --- PARA VOLVER ATRAS ESCRIBE CANCELAR ---");
     System.out.println("1. Agregar paciente");
     System.out.println("2. Ver pacientes");
     System.out.println("3. Agendar turno");
@@ -21,8 +21,9 @@ public class Main {
         case 1 -> {
             System.out.print("Nombre: ");
             String nombre = sc.nextLine();
-            System.out.print("DNI: ");
+            if (nombre.equalsIgnoreCase("cancelar")) continue;
             String dni = sc.nextLine();
+            if (dni.equalsIgnoreCase("cancelar")) continue;
             gestor.agregarPaciente(nombre, dni);
                 }
 
@@ -31,10 +32,12 @@ public class Main {
         case 3 -> {
             System.out.print("DNI del paciente: ");
             String dniTurno = sc.nextLine();
-            System.out.print("Fecha del turno: ");
-            String fecha = sc.nextLine();
-            gestor.agendarTurno(dniTurno, fecha);
-                }
+        if (dniTurno.equalsIgnoreCase("cancelar")) continue;
+        String fecha = sc.nextLine();
+        if (fecha.equalsIgnoreCase("cancelar")) continue;
+        String hora = sc.nextLine();
+        if (hora.equalsIgnoreCase("cancelar")) continue;
+        }
 
         case 4 -> gestor.mostrarTurnos();
 

@@ -35,13 +35,18 @@ No tiene base de datos ni archivos todavía. Todo se borra cuando cerrás el pro
 ## v0.3 - arranqué con guardar los pacientes y turnos en archivos '.txt'
 - File reader e writers para archivos '.txt'
 - `BuferedWriters` e imported io y Scanner en Main
--  
--
+
+## v0.4 - DNI no se duplique 
+- bool de checkeo de DNI
+- alert ante repeticion y break de cadena
+
+## v0.5 - Hora en turnos
+- cambie gestor, turno(dni fecha y hora ahora) y Main
+
+## v0.6 - opcion de cancelar
+- cancelar entra en juego
 
 ### Próximas versiones que tengo en mente (ideas en la libreta)
-- v0.3 → Guardar los pacientes y turnos en archivos `.txt`
-- v0.4 → Validar que el DNI no esté repetido
-- v0.5 → Agregar horarios a los turnos
 - v1.0 → Quizás una interfaz gráfica simple
 
 ---
