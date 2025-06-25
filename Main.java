@@ -39,13 +39,20 @@ public class Main {
         case 2 -> gestor.mostrarPacientes();
 
         case 3 -> {
-            System.out.print("DNI del paciente: ");
+            System.out.print("DNI del paciente (o 'cancelar'): ");
             String dniTurno = sc.nextLine();
-        if (dniTurno.equalsIgnoreCase("cancelar")) continue;
-        String fecha = sc.nextLine();
-        if (fecha.equalsIgnoreCase("cancelar")) continue;
-        String hora = sc.nextLine();
-        if (hora.equalsIgnoreCase("cancelar")) continue;
+            if (dniTurno.equalsIgnoreCase("cancelar")) continue;
+
+            
+            System.out.print("Fecha del turno (formato: dd/MM/yyyy, ej: 25/06/2025): ");
+            String fecha = sc.nextLine();
+            if (fecha.equalsIgnoreCase("cancelar")) continue;
+
+            System.out.print("Hora del turno (formato: HH:mm, ej: 14:30): ");
+            String hora = sc.nextLine();
+            if (hora.equalsIgnoreCase("cancelar")) continue;
+
+            gestor.agendarTurno(dniTurno, fecha, hora);
         }
 
         case 4 -> gestor.mostrarTurnos();

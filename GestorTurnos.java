@@ -1,5 +1,7 @@
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+
 
 public class GestorTurnos {
     public ArrayList<Paciente> pacientes = new ArrayList<>();
@@ -11,6 +13,7 @@ public class GestorTurnos {
     public GestorTurnos() {
         cargarPacientes();
         cargarTurnos();
+        limpiarTurnosPasados();
     }
 
 public void agregarPaciente(String nombre, String dni, String obraSocial) {
@@ -115,6 +118,8 @@ private void cargarTurnos() {
 }
 
 
+
+
     private void guardarTurno(Turno t) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_TURNOS, true))) {
             bw.write(t.paciente.dni + "|" + t.fecha);
@@ -130,4 +135,29 @@ private void cargarTurnos() {
         }
         return null;
     }
+private void limpiarTurnosPasados() {
+    LocalDateTime ahora = LocalDateTime.now();
+    int antes = turnos.size();
+
+    turnos.removeIf(t -> t.getFechaHora().isBefore(ahora));
+
+    int despues = turnos.size();
+    if (antes != despues) {
+        System.out.println("🧹 Se eliminaron " + (antes - despues) + " turnos pasados.");
+        sobrescribirArchivoTurnos();
+    }
+}
+private void sobrescribirArchivoTurnos() {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_TURNOS))) {
+        for (Turno t : turnos) {
+            bw.write(t.paciente.dni + "|" + t.fecha + "|" + t.hora);
+            bw.newLine();
+        }
+    } catch (IOException e) {
+        System.out.println("❌ Error al sobrescribir archivo de turnos.");
+    }
+}
+
+
+
 }
